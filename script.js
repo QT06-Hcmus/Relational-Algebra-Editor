@@ -86,17 +86,97 @@ function getEditorPlainText() {
     return plainText;
 }
 
-// Sao chép nội dung đã định dạng dưới dạng plain text
+// Chuyển đổi nội dung HTML của editor thành Markdown LaTeX
+function getEditorLatex() {
+    const editor = document.getElementById('editor');
+    if (!editor) return '';
+
+    const clone = editor.cloneNode(true);
+
+    // 1. Tìm và đổi các thẻ sub <sub>nội dung</sub> thành _{nội dung}
+    const subs = clone.getElementsByTagName('sub');
+    for (let i = subs.length - 1; i >= 0; i--) {
+        const sub = subs[i];
+        let textContent = sub.textContent;
+        // Xóa ký tự Zero-Width Space nếu có
+        textContent = textContent.replace(/\u200B/g, '');
+        
+        const textNode = document.createTextNode(`_{${textContent}}`);
+        sub.parentNode.replaceChild(textNode, sub);
+    }
+
+    // Chuyển đổi các thẻ xuống dòng phổ biến của contenteditable thành ký tự xuống dòng \n
+    let html = clone.innerHTML;
+    html = html.replace(/<div>/gi, '\n').replace(/<\/div>/gi, '');
+    html = html.replace(/<p>/gi, '\n').replace(/<\/p>/gi, '');
+    html = html.replace(/<br\s*\/?>/gi, '\n');
+
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+
+    // Lấy plain text và loại bỏ các ký tự ẩn
+    let plainText = temp.textContent;
+    plainText = plainText.replace(/\u200B/g, '');
+
+    // 2. Bản đồ chuyển đổi các ký tự sang lệnh LaTeX tương ứng
+    const latexMapping = {
+        'σ': '\\sigma',
+        'π': '\\pi',
+        'ρ': '\\rho',
+        '⋈': '\\bowtie',
+        '⟕': '\\bowtie_{L}',
+        '⟖': '\\bowtie_{R}',
+        '⟗': '\\bowtie_{F}',
+        '×': '\\times',
+        '∪': '\\cup',
+        '∩': '\\cap',
+        '−': '-',
+        '÷': '\\div',
+        '←': '\\leftarrow',
+        '→': '\\rightarrow',
+        '∧': '\\land',
+        '∨': '\\lor',
+        '¬': '\\neg',
+        '∀': '\\forall',
+        '∃': '\\exists',
+        '≠': '\\neq',
+        '≤': '\\le',
+        '≥': '\\ge',
+        '∈': '\\in',
+        'ℑ': '\\Im'
+    };
+
+    // Thực hiện thay thế từng ký tự đặc biệt
+    for (const [symbol, latex] of Object.entries(latexMapping)) {
+        const escapedSymbol = symbol.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        const regex = new RegExp(escapedSymbol, 'g');
+        plainText = plainText.replace(regex, latex);
+    }
+
+    plainText = plainText.trim();
+    if (!plainText) return '';
+
+    // 3. Định dạng Markdown LaTeX dựa trên số dòng
+    const lines = plainText.split('\n');
+    if (lines.length === 1) {
+        return `$$ ${plainText} $$`;
+    } else {
+        const latexLines = lines.map(line => line.trim()).filter(line => line.length > 0);
+        return `$$\n${latexLines.join(' \\\\\n')}\n$$`;
+    }
+}
+
+// Sao chép nội dung dưới dạng Markdown LaTeX
 function copyText() {
-    const text = getEditorPlainText();
-    if (!text.trim()) {
+    const latexText = getEditorLatex();
+    if (!latexText) {
         alert('Không có nội dung để sao chép!');
         return;
     }
 
-    navigator.clipboard.writeText(text)
+    navigator.clipboard.writeText(latexText)
         .then(() => {
-            alert('Đã sao chép biểu thức (dạng plain text: _{}) vào Clipboard!');
+            alert('Đã sao chép biểu thức dạng Markdown LaTeX vào Clipboard!');
         })
         .catch(err => {
             alert('Không thể sao chép: ' + err);
