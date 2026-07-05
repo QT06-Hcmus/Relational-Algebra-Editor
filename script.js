@@ -171,7 +171,21 @@ function printPage() {
     window.print();
 }
 
-// Thay đổi cỡ chữ của editor (1-100 pt)
+// Lưu trữ vùng chọn cuối cùng của người dùng trong editor để thay đổi cỡ chữ bôi đen
+let lastSavedRange = null;
+
+document.addEventListener('selectionchange', () => {
+    const sel = window.getSelection();
+    if (sel.rangeCount > 0) {
+        const range = sel.getRangeAt(0);
+        const editor = document.getElementById('editor');
+        if (editor && editor.contains(range.commonAncestorContainer)) {
+            lastSavedRange = range.cloneRange();
+        }
+    }
+});
+
+// Thay đổi cỡ chữ của editor hoặc đoạn văn bản bôi đen (1-100 pt)
 function changeFontSize(value) {
     const editor = document.getElementById('editor');
     if (!editor) return;
@@ -182,8 +196,41 @@ function changeFontSize(value) {
     if (size < 1) size = 1;
     if (size > 100) size = 100;
 
-    editor.style.fontSize = size + 'pt';
-    localStorage.setItem('relational_algebra_font_size_pt', size);
+    const sel = window.getSelection();
+    let range = null;
+
+    // Ưu tiên vùng chọn hiện tại, nếu không có thì dùng vùng chọn đã lưu gần nhất
+    if (sel.rangeCount && !sel.isCollapsed && editor.contains(sel.anchorNode)) {
+        range = sel.getRangeAt(0);
+    } else if (lastSavedRange && !lastSavedRange.collapsed && editor.contains(lastSavedRange.commonAncestorContainer)) {
+        range = lastSavedRange;
+    }
+
+    if (range) {
+        // Tạo thẻ span bọc đoạn bôi đen
+        const span = document.createElement('span');
+        span.style.fontSize = size + 'pt';
+        
+        try {
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+            
+            // Chọn lại đoạn văn bản vừa thay đổi
+            const newRange = document.createRange();
+            newRange.selectNodeContents(span);
+            sel.removeAllRanges();
+            sel.addRange(newRange);
+            
+            // Cập nhật lại vùng chọn đã lưu
+            lastSavedRange = newRange.cloneRange();
+        } catch (e) {
+            console.error("Lỗi khi đổi cỡ chữ phần bôi đen:", e);
+        }
+    } else {
+        // Nếu không có phần bôi đen nào, đổi cỡ chữ mặc định của cả editor
+        editor.style.fontSize = size + 'pt';
+        localStorage.setItem('relational_algebra_font_size_pt', size);
+    }
 }
 
 // Kiểm tra tính hợp lệ của ô nhập khi rời con trỏ (onblur)
