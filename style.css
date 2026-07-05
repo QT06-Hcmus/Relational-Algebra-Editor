@@ -140,6 +140,28 @@ button:focus {
     padding: 10px;
     overflow: auto;
     min-height: 0;
+    -ms-overflow-style: auto;  /* Enable scrollbar for IE/Edge */
+    scrollbar-width: thin;  /* Make Firefox scrollbar thin */
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* Faint scrollbar thumb in Firefox */
+}
+
+/* Custom thin and faint horizontal scrollbar for WebKit (Chrome, Safari, Edge) */
+.editor-container::-webkit-scrollbar {
+    display: block;
+    height: 6px;
+}
+
+.editor-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.editor-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
+.editor-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
 }
 
 #editor {
