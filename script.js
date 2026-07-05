@@ -171,13 +171,31 @@ function printPage() {
     window.print();
 }
 
-// Thay đổi cỡ chữ của editor
-function changeFontSize(size) {
+// Thay đổi cỡ chữ của editor (1-100 pt)
+function changeFontSize(value) {
     const editor = document.getElementById('editor');
-    if (editor) {
-        editor.style.fontSize = size;
-        localStorage.setItem('relational_algebra_font_size', size);
+    if (!editor) return;
+
+    let size = parseInt(value, 10);
+    if (isNaN(size)) return;
+
+    if (size < 1) size = 1;
+    if (size > 100) size = 100;
+
+    editor.style.fontSize = size + 'pt';
+    localStorage.setItem('relational_algebra_font_size_pt', size);
+}
+
+// Kiểm tra tính hợp lệ của ô nhập khi rời con trỏ (onblur)
+function validateFontSizeInput(input) {
+    let size = parseInt(input.value, 10);
+    if (isNaN(size) || size < 1) {
+        size = 14; // Mặc định nếu không hợp lệ
+    } else if (size > 100) {
+        size = 100;
     }
+    input.value = size;
+    changeFontSize(size);
 }
 
 // Lắng nghe sự kiện bàn phím trên editor để hỗ trợ phím Tab và phím di chuyển
@@ -192,12 +210,16 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // Tự động khôi phục cỡ chữ cũ nếu có
-    const savedFontSize = localStorage.getItem('relational_algebra_font_size');
+    const savedFontSize = localStorage.getItem('relational_algebra_font_size_pt') || localStorage.getItem('relational_algebra_font_size');
     if (savedFontSize) {
-        editor.style.fontSize = savedFontSize;
-        const select = document.getElementById('font-size-select');
-        if (select) {
-            select.value = savedFontSize;
+        let sizeStr = savedFontSize.replace('pt', '');
+        let size = parseInt(sizeStr, 10);
+        if (!isNaN(size) && size >= 1 && size <= 100) {
+            editor.style.fontSize = size + 'pt';
+            const input = document.getElementById('font-size-input');
+            if (input) {
+                input.value = size;
+            }
         }
     }
 

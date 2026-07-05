@@ -100,17 +100,8 @@
             </div>
             <div class="action-buttons">
                 <div class="font-size-control">
-                    <label for="font-size-select">Cỡ chữ:</label>
-                    <select id="font-size-select" onchange="changeFontSize(this.value)">
-                        <option value="12pt">12pt</option>
-                        <option value="13pt">13pt</option>
-                        <option value="14pt" selected>14pt</option>
-                        <option value="16pt">16pt</option>
-                        <option value="18pt">18pt</option>
-                        <option value="20pt">20pt</option>
-                        <option value="24pt">24pt</option>
-                        <option value="28pt">28pt</option>
-                    </select>
+                    <label for="font-size-input">Cỡ chữ (1-100):</label>
+                    <input type="number" id="font-size-input" min="1" max="100" value="14" oninput="changeFontSize(this.value)" onblur="validateFontSizeInput(this)">
                 </div>
                 <button type="button" onclick="copyText()">Copy</button>
                 <button type="button" onclick="clearText()">Clear</button>
