@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công cụ soạn Đại số quan hệ</title>
+    <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+    <header>
+        <h1>Công cụ soạn Đại số quan hệ</h1>
+    </header>
+    
+    <main class="container">
+        <!-- Cột bên trái: Các nút ký hiệu -->
+        <section class="left-panel">
+            <div class="group-section">
+                <h2>Phép toán cơ bản</h2>
+                <div class="btn-grid">
+                    <button type="button" onclick="insertAtCursor('σ', true)">σ</button>
+                    <button type="button" onclick="insertAtCursor('π', true)">π</button>
+                    <button type="button" onclick="insertAtCursor('ρ', true)">ρ</button>
+                    <button type="button" onclick="insertAtCursor('←')">←</button>
+                    <button type="button" onclick="insertAtCursor('→')">→</button>
+                    <button type="button" onclick="insertAtCursor('⋈', true)">⋈</button>
+                    <button type="button" onclick="insertAtCursor('×')">×</button>
+                    <button type="button" onclick="insertAtCursor('∪')">∪</button>
+                    <button type="button" onclick="insertAtCursor('∩')">∩</button>
+                    <button type="button" onclick="insertAtCursor('−')">−</button>
+                    <button type="button" onclick="insertAtCursor('÷')">÷</button>
+                </div>
+            </div>
+
+            <div class="group-section">
+                <h2>Phép nối</h2>
+                <div class="btn-grid">
+                    <button type="button" onclick="insertAtCursor('⋈', true)">⋈</button>
+                    <button type="button" onclick="insertAtCursor('⟕', true)">⟕</button>
+                    <button type="button" onclick="insertAtCursor('⟖', true)">⟖</button>
+                    <button type="button" onclick="insertAtCursor('⟗', true)">⟗</button>
+                </div>
+            </div>
+
+            <div class="group-section">
+                <h2>Điều kiện logic</h2>
+                <div class="btn-grid-named">
+                    <button type="button" onclick="insertAtCursor(' ∧ ')">∧ : và</button>
+                    <button type="button" onclick="insertAtCursor(' ∨ ')">∨ : hoặc</button>
+                    <button type="button" onclick="insertAtCursor('¬')">¬ : phủ định</button>
+                    <button type="button" onclick="insertAtCursor('∀')">∀ : với mọi</button>
+                    <button type="button" onclick="insertAtCursor('∃')">∃ : tồn tại</button>
+                </div>
+                <div class="btn-grid">
+                    <button type="button" onclick="insertAtCursor(' = ')">=</button>
+                    <button type="button" onclick="insertAtCursor(' ≠ ')">≠</button>
+                    <button type="button" onclick="insertAtCursor(' < ')">&lt;</button>
+                    <button type="button" onclick="insertAtCursor(' ≤ ')">≤</button>
+                    <button type="button" onclick="insertAtCursor(' > ')">&gt;</button>
+                    <button type="button" onclick="insertAtCursor(' ≥ ')">≥</button>
+                    <button type="button" onclick="insertAtCursor(' ∈ ')">∈</button>
+                </div>
+            </div>
+
+            <div class="group-section">
+                <h2>Ký hiệu gom nhóm</h2>
+                <div class="btn-grid">
+                    <button type="button" onclick="insertAtCursor('ℑ', true)">ℑ</button>
+                </div>
+            </div>
+
+            <div class="group-section">
+                <h2>Hàm thống kê</h2>
+                <div class="btn-grid-flex">
+                    <button type="button" onclick="insertAtCursor('COUNT()', false, 6)">COUNT()</button>
+                    <button type="button" onclick="insertAtCursor('SUM()', false, 4)">SUM()</button>
+                    <button type="button" onclick="insertAtCursor('AVG()', false, 4)">AVG()</button>
+                    <button type="button" onclick="insertAtCursor('MIN()', false, 4)">MIN()</button>
+                    <button type="button" onclick="insertAtCursor('MAX()', false, 4)">MAX()</button>
+                </div>
+            </div>
+
+            <div class="group-section">
+                <h2>Ký hiệu phụ</h2>
+                <div class="btn-grid-flex">
+                    <button type="button" onclick="insertAtCursor('_')">_</button>
+                    <button type="button" onclick="insertAtCursor('{}', false, 1)">{}</button>
+                    <button type="button" onclick="insertAtCursor('()', false, 1)">()</button>
+                    <button type="button" onclick="insertAtCursor(', ')">,</button>
+                    <button type="button" onclick="insertAtCursor('.')">.</button>
+                    <button type="button" onclick="insertAtCursor('; ')">;</button>
+                    <button type="button" onclick="insertAtCursor('\'01/04/2022\'')">'01/04/2022'</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cột bên phải: Vùng soạn thảo và các nút thao tác -->
+        <section class="right-panel">
+            <div class="editor-container">
+                <div id="editor" contenteditable="true"></div>
+            </div>
+            <div class="action-buttons">
+                <button type="button" onclick="copyText()">Copy</button>
+                <button type="button" onclick="clearText()">Clear</button>
+                <button type="button" onclick="saveText()">Save</button>
+                <button type="button" onclick="loadText()">Load</button>
+                <button type="button" onclick="downloadTxt()">Download TXT</button>
+                <button type="button" onclick="printPage()">Print</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

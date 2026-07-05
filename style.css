@@ -1,0 +1,209 @@
+@charset "utf-8";
+
+/* Minimalist design: Black (#000000) and White (#ffffff) only */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-radius: 0 !important;
+}
+
+body, button {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    color: #000000;
+}
+
+html, body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+body {
+    background-color: #ffffff;
+    padding: 20px;
+    line-height: 1.4;
+    display: flex;
+    flex-direction: column;
+}
+
+header, main, section, div, p, h1, h2 {
+    background-color: #ffffff;
+}
+
+header {
+    border-bottom: 2px solid #000000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    min-height: 0;
+}
+
+/* Left panel: Symbols grid */
+.left-panel {
+    width: 40%;
+    border-right: 2px solid #000000;
+    padding-right: 20px;
+    overflow-y: auto;
+}
+
+.group-section {
+    margin-bottom: 20px;
+}
+
+.group-section h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 4px;
+}
+
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-grid-named {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.btn-grid-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+/* Style for all buttons */
+button {
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    padding: 8px 12px;
+    font-weight: bold;
+    text-align: center;
+    transition: none;
+    box-shadow: none;
+}
+
+button:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+button:focus {
+    outline: 2px solid #000000;
+    outline-offset: 1px;
+}
+
+/* Right panel: Editor area */
+.right-panel {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-height: 0;
+}
+
+.editor-container {
+    flex: 1;
+    display: flex;
+    background-color: #ffffff;
+    min-height: 0;
+}
+
+#editor {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #000000;
+    padding: 15px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 20px;
+    outline: none;
+    white-space: pre-wrap;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+
+#editor:focus {
+    outline: 2px solid #000000;
+}
+
+/* Subscript inside editor */
+#editor sub {
+    font-size: 0.65em;
+    vertical-align: baseline;
+    position: relative;
+    top: 0.25em;
+    line-height: 0;
+    background-color: transparent !important;
+    display: inline-block;
+    min-width: 5px;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.action-buttons button {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+/* Print CSS */
+@media print {
+    html, body {
+        height: auto !important;
+        overflow: visible !important;
+    }
+    
+    body {
+        padding: 0;
+    }
+    
+    .left-panel, 
+    .action-buttons, 
+    header {
+        display: none !important;
+    }
+    
+    .container {
+        display: block;
+    }
+    
+    .right-panel {
+        width: 100%;
+    }
+    
+    #editor {
+        border: none;
+        width: 100%;
+        height: auto;
+        min-height: 100%;
+        overflow: visible;
+        font-size: 20px;
+    }
+}
