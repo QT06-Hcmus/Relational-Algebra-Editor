@@ -350,6 +350,27 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Hỗ trợ Ctrl + cuộn chuột để thu phóng cỡ chữ của editor
+    editor.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) {
+            e.preventDefault();
+            const input = document.getElementById('font-size-input');
+            if (input) {
+                let size = parseInt(input.value, 10);
+                if (isNaN(size)) size = 14;
+                
+                if (e.deltaY < 0) {
+                    size = Math.min(size + 1, 100); // Tăng cỡ chữ
+                } else {
+                    size = Math.max(size - 1, 1);   // Giảm cỡ chữ
+                }
+                
+                input.value = size;
+                changeFontSize(size);
+            }
+        }
+    }, { passive: false });
+
     editor.addEventListener('keydown', function(e) {
         const sel = window.getSelection();
         if (sel.rangeCount === 0) return;

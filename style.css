@@ -133,12 +133,10 @@ button:focus {
 
 .editor-container {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    display: block; /* Sửa thành block để kiểm soát vùng cuộn tốt hơn */
     background-color: #ffffff;
-    padding: 10px;
-    overflow: auto;
+    border: 2px solid #000000; /* Cố định đường viền đen ở khung chứa */
+    overflow: auto; /* Cuộn ngang/dọc được xử lý tại container để bảo vệ padding của editor */
     min-height: 0;
     -ms-overflow-style: auto;  /* Enable scrollbar for IE/Edge */
     scrollbar-width: thin;  /* Make Firefox scrollbar thin */
@@ -149,6 +147,7 @@ button:focus {
 .editor-container::-webkit-scrollbar {
     display: block;
     height: 6px;
+    width: 6px;
 }
 
 .editor-container::-webkit-scrollbar-track {
@@ -165,21 +164,18 @@ button:focus {
 }
 
 #editor {
-    width: 210mm;
-    height: 297mm;
-    min-width: 210mm;
-    min-height: 297mm;
-    max-width: 210mm;
-    max-height: 297mm;
-    border: 2px solid #000000;
-    padding: 20mm;
+    min-width: 100%;
+    width: max-content; /* Tự động mở rộng chiều rộng khi có biểu thức dài để không bị mất padding */
+    min-height: 100%;
+    padding: 15px; /* Giảm padding về cỡ chuẩn 15px */
     font-family: "Times New Roman", Times, serif;
     font-size: 14pt;
     outline: none;
     white-space: pre-wrap;
-    overflow-y: auto;
     background-color: #ffffff;
     box-sizing: border-box;
+    display: inline-block; /* Giúp nhận padding và width: max-content */
+    vertical-align: top;
     resize: none;
 }
 
@@ -223,8 +219,7 @@ button:focus {
     top: 0.25em;
     line-height: 0;
     background-color: transparent !important;
-    display: inline-block;
-    min-width: 5px;
+    display: inline; /* Sử dụng display inline để tránh lỗi xuống dòng tách rời ký tự gốc và chỉ số dưới */
 }
 
 .action-buttons {
