@@ -171,6 +171,15 @@ function printPage() {
     window.print();
 }
 
+// Thay đổi cỡ chữ của editor
+function changeFontSize(size) {
+    const editor = document.getElementById('editor');
+    if (editor) {
+        editor.style.fontSize = size;
+        localStorage.setItem('relational_algebra_font_size', size);
+    }
+}
+
 // Lắng nghe sự kiện bàn phím trên editor để hỗ trợ phím Tab và phím di chuyển
 window.addEventListener('DOMContentLoaded', () => {
     const editor = document.getElementById('editor');
@@ -180,6 +189,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const savedHtml = localStorage.getItem('relational_algebra_editor_html_v2');
     if (savedHtml) {
         editor.innerHTML = savedHtml;
+    }
+
+    // Tự động khôi phục cỡ chữ cũ nếu có
+    const savedFontSize = localStorage.getItem('relational_algebra_font_size');
+    if (savedFontSize) {
+        editor.style.fontSize = savedFontSize;
+        const select = document.getElementById('font-size-select');
+        if (select) {
+            select.value = savedFontSize;
+        }
     }
 
     editor.addEventListener('keydown', function(e) {
