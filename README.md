@@ -1,1 +1,1 @@
-# C-ng-c-so-n-th-o-i-s-quan-h-
+#Công cụ soạn đại số quan hệ
